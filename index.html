@@ -48,7 +48,8 @@
 
     input[type="text"],
     input[type="date"],
-    input[type="email"] {
+    input[type="email"],
+    select {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
@@ -161,6 +162,16 @@
     <label for="email">Teacher Email</label>
     <input type="email" id="email" placeholder="teacher@example.com">
 
+    <label for="timer">Time Limit</label>
+    <select id="timer">
+      <option value="">-- Select Time Limit --</option>
+      <option value="15 minutes">15 minutes</option>
+      <option value="30 minutes">30 minutes</option>
+      <option value="45 minutes">45 minutes</option>
+      <option value="1 hour">1 hour</option>
+      <option value="2 hours">2 hours</option>
+    </select>
+
     <button id="generateBtn" onclick="generateLink()">Generate Link</button>
 
     <div id="output">
@@ -187,8 +198,9 @@
       const section = encodeURIComponent(document.getElementById("section").value.trim());
       const date = encodeURIComponent(document.getElementById("date").value);
       const email = encodeURIComponent(document.getElementById("email").value.trim());
+      const timer = encodeURIComponent(document.getElementById("timer").value);
 
-      if (!section || !date || !email) {
+      if (!section || !date || !email || !timer) {
         alert("Please fill in all fields.");
         return;
       }
@@ -197,8 +209,9 @@
       const sectionEntry = "entry.2006664160=" + section;
       const dateEntry = "entry.1468013876=" + date;
       const emailEntry = "entry.1136565020=" + email;
+      const timerEntry = "entry.1207329809=" + timer;
 
-      const finalURL = `${baseURL}&${sectionEntry}&${dateEntry}&${emailEntry}`;
+      const finalURL = `${baseURL}&${sectionEntry}&${dateEntry}&${emailEntry}&${timerEntry}`;
 
       document.getElementById("generatedLink").value = finalURL;
       document.getElementById("output").style.display = "block";
