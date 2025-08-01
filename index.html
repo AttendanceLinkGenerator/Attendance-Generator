@@ -93,7 +93,6 @@
       color: var(--text-color);
     }
 
-    /* Toggle switch */
     .toggle-wrapper {
       display: flex;
       justify-content: flex-end;
@@ -185,7 +184,11 @@
   </div>
 
   <script>
-    // Dark mode toggle with local storage
+    window.onload = function () {
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("date").value = today;
+    };
+
     const darkToggle = document.getElementById('darkToggle');
     const isDark = localStorage.getItem('dark-mode') === 'true';
     document.body.classList.toggle('dark', isDark);
@@ -218,12 +221,14 @@
 
       document.getElementById("generatedLink").value = finalURL;
       document.getElementById("output").style.display = "block";
-    }
 
+      window.open(finalURL, "_blank");
+    }
+    
     function copyToClipboard() {
       const link = document.getElementById("generatedLink");
       link.select();
-      link.setSelectionRange(0, 99999); // for mobile devices
+      link.setSelectionRange(0, 99999);
       document.execCommand("copy");
       alert("Link copied to clipboard!");
     }
