@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attendance Link Generator</title>
+  <style>
+    :root {
+      --bg-color: #f0f0f0;
+      --text-color: #000;
+      --box-color: #fff;
+      --btn-color: #007bff;
+      --btn-copy-color: #28a745;
+    }
+
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #f9f9f9;
+      --box-color: #2c2c2c;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 40px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container {
+      background-color: var(--box-color);
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: background-color 0.3s;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #generateBtn {
+      background-color: var(--btn-color);
+      color: white;
+    }
+
+    #copyBtn {
+      background-color: var(--btn-copy-color);
+      color: white;
+      margin-left: 10px;
+    }
+
+    #output {
+      margin-top: 20px;
+      display: none;
+    }
+
+    #generatedLink {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-top: 10px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    /* Toggle switch */
+    .toggle-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 26px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px; width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toggle-wrapper">
+      <label class="toggle-switch">
+        <input type="checkbox" id="darkToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <h2>Attendance Link Generator</h2>
+
+    <label for="section">Class Section</label>
+    <input type="text" id="section" placeholder="BSIT-211A">
+
+    <label for="date">Date</label>
+    <input type="date" id="date">
+
+    <label for="email">Teacher Email</label>
+    <input type="email" id="email" placeholder="teacher@example.com">
+
+    <button id="generateBtn" onclick="generateLink()">Generate Link</button>
+
+    <div id="output">
+      <label for="generatedLink">Generated Attendance Link</label>
+      <input type="text" id="generatedLink" readonly>
+      <button id="copyBtn" onclick="copyToClipboard()">Copy</button>
+    </div>
+  </div>
+
+  <script>
+    // Dark mode toggle with local storage
+    const darkToggle = document.getElementById('darkToggle');
+    const isDark = localStorage.getItem('dark-mode') === 'true';
+    document.body.classList.toggle('dark', isDark);
+    darkToggle.checked = isDark;
+
+    darkToggle.addEventListener('change', () => {
+      const enabled = darkToggle.checked;
+      document.body.classList.toggle('dark', enabled);
+      localStorage.setItem('dark-mode', enabled);
+    });
+
+    function generateLink() {
+      const section = encodeURIComponent(document.getElementById("section").value.trim());
+      const date = encodeURIComponent(document.getElementById("date").value);
+      const email = encodeURIComponent(document.getElementById("email").value.trim());
+
+      if (!section || !date || !email) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const baseURL = "https://docs.google.com/forms/d/e/1FAIpQLScRl7bgEGNzjHHyeTMtOtNqvSaILTjAHnpr7tqn_xPENB0HrA/viewform?usp=pp_url";
+      const sectionEntry = "entry.2006664160=" + section;
+      const dateEntry = "entry.1468013876=" + date;
+      const emailEntry = "entry.1136565020=" + email;
+
+      const finalURL = `${baseURL}&${sectionEntry}&${dateEntry}&${emailEntry}`;
+
+      document.getElementById("generatedLink").value = finalURL;
+      document.getElementById("output").style.display = "block";
+    }
+
+    function copyToClipboard() {
+      const link = document.getElementById("generatedLink");
+      link.select();
+      link.setSelectionRange(0, 99999); // for mobile devices
+      document.execCommand("copy");
+      alert("Link copied to clipboard!");
+    }
+  </script>
+</body>
+</html>
