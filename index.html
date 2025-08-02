@@ -212,13 +212,13 @@
         return;
       }
 
-      const baseURL = "https://docs.google.com/forms/d/e/1FAIpQLSdhthLzFpQJpVcubjEzdWHJ2kJKygiXIrAhzM-KL4NnLQSV-A/viewform";
+      const baseURL = "https://docs.google.com/forms/d/e/1FAIpQLSdhthLzFpQJpVcubjEzdWHJ2kJKygiXIrAhzM-KL4NnLQSV-A/viewform?usp=pp_url";
       const sectionEntry = "&entry.688337567=" + section;
       const dateEntry = "&entry.1129429533=" + date;
       const emailEntry = "&entry.1625436162=" + email;
       const timerEntry = "&entry.2046294400=" + timer;
 
-      const finalURL = `${baseURL}&${sectionEntry}&${dateEntry}&${emailEntry}&${timerEntry}`;
+      const finalURL = `${baseURL}${sectionEntry}${dateEntry}${emailEntry}${timerEntry}`;
 
       document.getElementById("generatedLink").value = finalURL;
       document.getElementById("output").style.display = "block";
